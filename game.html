@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tebak warnanya, anying😹</title>
+  <style>
+    :root {
+      font-size: clamp(12px, 2.5vw, 20px);
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: #000;
+      color: #fff;
+    }
+
+    h1 {
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff8;
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #stage {
+      font-size: 1.2rem;
+      color: #0f0;
+      margin-bottom: 1rem;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 90vw;
+    }
+
+    .circle {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #444;
+      transition: transform 0.2s;
+    }
+
+    .circle:hover {
+      transform: scale(1.05);
+    }
+
+    #status {
+      margin-top: 2rem;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ff0;
+    }
+
+    #result-img {
+      margin-top: 1rem;
+      max-width: 60vw;
+      max-height: 30vh;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px #fff5;
+    }
+
+    @media (min-width: 768px) {
+      #result-img {
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tebak warnanya, goblok</h1>
+  <div id="stage">Stage: 1 / 10</div>
+  <div id="grid"></div>
+  <div id="status"></div>
+  <img id="result-img" src="" alt="">
+
+  <script>
+    const difficulty = localStorage.getItem('difficulty') || 'easy';
+    const grid = document.getElementById('grid');
+    const status = document.getElementById('status');
+    const stageText = document.getElementById('stage');
+    const resultImg = document.getElementById('result-img');
+
+    let stage = 1;
+    const totalStages = 10;
+
+    const diffs = {
+      easy: 0.7,
+      medium: 0.4,
+      hard: 0.1
+    };
+
+    const winMsg = {
+      easy: "wih, GG lu🤓",
+      medium: "sevuh juga lu😱",
+      hard: "lu rasis ya? 🤨"
+    };
+
+    const loseMsg = {
+      easy: "nub bet lu, anying😹",
+      medium: "maklumlah kalah di level ini🗿",
+      hard: "cupu lu🤭😹😹"
+    };
+
+    const winImg = {
+      easy: "Game-texture/easy_win.png",
+      medium: "Game-texture/medium_win.png",
+      hard: "Game-texture/hard_win.png"
+    };
+
+    const loseImg = {
+      easy: "Game-texture/easy_lose.png",
+      medium: "Game-texture/medium_lose.png",
+      hard: "Game-texture/hard_lose.png"
+    };
+
+    function getRandomColor(base, diffRatio) {
+      let adjust = Math.floor(255 * diffRatio);
+      return base.map(v => Math.min(255, v + adjust));
+    }
+
+    function rgbToStr(rgb) {
+      return `rgb(${rgb.join(",")})`;
+    }
+
+    function startStage() {
+      status.textContent = "";
+      resultImg.src = "";
+      stageText.textContent = `Stage: ${stage} / ${totalStages}`;
+      grid.innerHTML = "";
+
+      const baseColor = [rand(), rand(), rand()];
+      const differentColor = getRandomColor(baseColor, diffs[difficulty]);
+      const answerIndex = Math.floor(Math.random() * 9);
+
+      for (let i = 0; i < 9; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'circle';
+        circle.style.background = i === answerIndex ? rgbToStr(differentColor) : rgbToStr(baseColor);
+        circle.addEventListener('click', () => {
+          if (i === answerIndex) {
+            if (stage >= totalStages) {
+              status.textContent = winMsg[difficulty];
+              resultImg.src = winImg[difficulty];
+              grid.innerHTML = "";
+            } else {
+              stage++;
+              startStage();
+            }
+          } else {
+            status.textContent = loseMsg[difficulty];
+            resultImg.src = loseImg[difficulty];
+            grid.innerHTML = "";
+          }
+        });
+        grid.appendChild(circle);
+      }
+    }
+
+    function rand() {
+      return Math.floor(Math.random() * 180);
+    }
+
+    startStage();
+  </script>
+
+</body>
+</html>

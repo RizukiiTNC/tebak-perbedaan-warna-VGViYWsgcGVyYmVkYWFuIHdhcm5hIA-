@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Tebak Warna</title>
+  <style>
+    :root {
+      font-size: clamp(12px, 2.5vw, 20px);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .menu {
+      background: #111;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .menu h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin: 0.75rem 0;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #3da340;
+    }
+
+    @media (min-width: 768px) {
+      .menu h1 {
+        font-size: 2.5rem;
+      }
+
+      .btn {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="menu">
+    <h1>Pilih Difficulty-nya, kunyuk</h1>
+    <button class="btn" onclick="startGame('easy')">ijit</button>
+    <button class="btn" onclick="startGame('medium')">Mid bnget</button>
+    <button class="btn" onclick="startGame('hard')">udah susah nih</button>
+  </div>
+
+  <script>
+    function startGame(difficulty) {
+      localStorage.setItem('difficulty', difficulty);
+      window.location.href = 'game.html';
+    }
+  </script>
+
+</body>
+</html>
